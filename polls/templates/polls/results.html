@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Polls Result</title>
+
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    {% load static %}
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        body{
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height:100vh;
+          background-image: url("{% static 'polls/bg2.avif' %}");
+          background-size: 100%;
+          background-repeat: no-repeat;
+        }
+      </style>
+
+</head>
+<body>
+    <div>
+        <table class="table text-white">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">Options</th>
+                <th scope="col">Number of Votes</th>
+              </tr>
+            </thead>
+            {% for choice in question.choice_set.all %}
+            <tbody>
+                <tr>
+                    <th scope="row">{{ choice.choice_text }}</th>
+                    <td>{{ choice.votes }} vote{{ choice.votes|pluralize }}</td>
+                </tr>
+            </tbody>
+        {% endfor %}
+    </div>
+
+    
+    <a href="{% url 'polls:detail' question.id %}">
+        <button type="button" class="btn btn-outline-secondary">Vote again?</button>
+    </a>
+    <a href="{% url 'polls:detail' question.id|add:'1' %}">
+        <button type="button" class="btn btn-outline-secondary">Next Question</button>
+    </a>
+</body>
+</html>

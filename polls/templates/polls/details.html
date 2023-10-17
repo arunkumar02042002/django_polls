@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Polls Question {{ question.id }}</title>
+
+  <style>
+    *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Poppins', sans-serif;
+    }
+    body{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height:100vh;
+      background-color: #eee;
+    }
+  </style>
+  {% load bootstrap5 %}
+  {% bootstrap_css %}
+  {% bootstrap_javascript %}
+  {% load static %}
+</head>
+
+<body>
+  <form action="{% url 'polls:vote' question.id %}" method="post">
+    {% csrf_token %}
+    <fieldset>
+      <legend><h1>{{ question.question_text }}</h1></legend>
+      {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+      <div class="btn-group" role="group" aria-label="Basic radio toggle button group"></div>
+        {% for choice in question.choice_set.all %}
+          <input type="radio" class="btn-check" name="choice" id="btnradio{{ forloop.counter }}" value="{{ choice.id }}">
+          <label class="btn btn-outline-primary" for="btnradio{{ forloop.counter }}">{{ choice.choice_text }}</label>
+        {% endfor %}
+      </div>
+  </fieldset>
+  
+  <input type="submit" class="btn btn-primary mt-3" value="Vote">
+  </form>
+</body>
+</html>
